@@ -1,0 +1,27 @@
+extends default
+
+block content
+  div.containerl
+    form(method='POST' action='/register')
+      div.form-group
+        label(for='username') Username
+        input.form-control(type='text' id='username' placeholder='username' name='username' required)
+      div.form-group
+        label(for='name') First Name
+        input.form-control(type='text' id='name' placeholder='name' name='name' required)
+      div.form-group
+        label(for='surname') Last Name
+        input.form-control(type='text' id='surname' placeholder='surname' name='surname' required)
+      div.form-group
+        label(for='email') Email
+        input.form-control(type='text' id='email' placeholder='email' name='email' required)
+      div.form-group
+        label(for='date') Date of Birth
+        input.form-control(type='date' id='birthdate' placeholder='birthdate' name='birthdate' required)
+      div.form-group
+        label(for='password') Password
+        input.form-control(type='password' id='password' placeholder='password' name='password' required)
+      div.form-group
+        label(for='cpassword') Confirm Password
+        input.form-control(type='password' id='cpassword' placeholder='cpassword' name='cpassword' required)
+      button.btn.btn-primary(type='submit') Log in

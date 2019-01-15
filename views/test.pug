@@ -1,0 +1,13 @@
+extends default
+
+block content
+  div.containerl
+    table
+      for person in personList
+        tr
+          td= person.gender
+          td
+            td= person.name
+            td= person.surname
+            td= person.passwd
+            
