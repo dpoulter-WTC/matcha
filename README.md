@@ -1,3 +1,20 @@
+<h1 align="center">
+  How to install and run Matcha
+</h1>
+
+First ensure you have the following installed:
+
+<ul>
+  <li>Node.js - <a href="https://nodejs.org/en/download/"></li>
+  <li>Gatsby</li>
+  <li>Yarn</li>
+</ul>
+
+Simply use: ```yarn install
+yarn start```
+In order to run the project
+
+
 <!-- AUTO-GENERATED-CONTENT:START (STARTER) -->
 <p align="center">
   <a href="https://www.gatsbyjs.org">
