@@ -5,7 +5,7 @@
 First ensure you have the following installed:
 
 <ul>
-  <li>Node.js - <a href="https://nodejs.org/en/download/"></a></li>
+  <li><a href="https://nodejs.org/en/download/">Node.js</a></li>
   <li>Gatsby</li>
   <li>Yarn</li>
 </ul>
