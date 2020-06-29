@@ -14,7 +14,7 @@ export default function NavBar() {
       <nav>
         <Link to="/">Home</Link>
         {` `}
-        <Link to="/">Profile</Link>
+        <Link to="/profile">Profile</Link>
         {` `}
         <Link to="/">Logout</Link>
       </nav>
