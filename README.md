@@ -10,10 +10,8 @@ First ensure you have the following installed:
   <li>Yarn</li>
 </ul>
 
-Simply use: ```yarn install
-yarn start```
+Simply use: `yarn install yarn start`
 In order to run the project
-
 
 <!-- AUTO-GENERATED-CONTENT:START (STARTER) -->
 <p align="center">

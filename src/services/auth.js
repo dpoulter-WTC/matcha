@@ -1,3 +1,5 @@
+import firebase from "gatsby-plugin-firebase"
+
 export const isBrowser = () => typeof window !== "undefined"
 export const getUser = () =>
   isBrowser() && window.localStorage.getItem("gatsbyUser")
@@ -6,6 +8,11 @@ export const getUser = () =>
 const setUser = user =>
   window.localStorage.setItem("gatsbyUser", JSON.stringify(user))
 export const handleLogin = ({ username, password }) => {
+  firebase.database().ref('/Users/' + username).once('value').then(function(snapshot) {
+    var test = snapshot.val();
+    var test1 = snapshot.val().username;
+    console.log(test + " Blank " + test1);
+  });
   if (username === `john` && password === `pass`) {
     return setUser({
       username: `john`,
