@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import styles from "../styles/register.module.css"
+import nextPath from '../helpers/nextPath';
 
 const bcrypt = require('../helpers/custom_bcrypt.js')
 
@@ -60,8 +61,11 @@ class Register extends Component {
                 })
                 var x = document.getElementById('error');
                 x.style.display = 'block';
+            } else {
+                nextPath('/registered')
             }
         }
+       
     }
 
     handleChange = (event) => {

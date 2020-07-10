@@ -151,6 +151,14 @@ router.post("/checklike", function (req, res, next) {
 });
 
 router.post("/like", function (req, res, next) {
+  dbConnect.query("UPDATE `user_login` SET `fame` = `fame` + 1 WHERE `username` = '" + req.body.profile + "';", function (err, rows, fields) {
+    if (err) {
+      console.log('Error')
+    } else {
+      console.log('No error in the query')
+    }
+  })
+  
   dbConnect.query("INSERT INTO `likes` (`id`, `username`, `profile`) VALUES ('', '" + req.body.username + "', '" + req.body.profile + "');", function (err, rows, fields) {
     if (err) {
       console.log(err)
@@ -163,6 +171,13 @@ router.post("/like", function (req, res, next) {
 });
 
 router.post("/unlike", function (req, res, next) {
+  dbConnect.query("UPDATE `user_login` SET `fame` = `fame` - 1 WHERE `username` = '" + req.body.profile + "';", function (err, rows, fields) {
+    if (err) {
+      console.log('Error')
+    } else {
+      console.log('No error in the query')
+    }
+  })
   dbConnect.query("DELETE FROM `likes` WHERE `username` = '" + req.body.username + "' AND `profile` = '" + req.body.profile + "';", function (err, rows, fields) {
     if (err) {
       console.log(err)

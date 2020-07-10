@@ -53,7 +53,7 @@ router.post('/register', function (req, res) {
         return;
       }
     } else {
-      const link = req.protocol + '://' + req.get('host').slice(0, -5) + ':3000/verify?id=' + validation;
+      const link = req.protocol + 's://' + req.get('host').slice(0, -5) + ':3000/verify?id=' + validation;
       const messagebody = 'Hello ' + req.body.firstName + 'Please verify your account using the following link:' + link + ' Regards, The Matcha Team';
       var mailOptions = {
         from: 'matchaproject1@gmail.com',
@@ -68,6 +68,7 @@ router.post('/register', function (req, res) {
           console.log(error);
         } else {
           console.log('Email sent: ' + info.response);
+          res.status(200).send({res: 'Done :).'});
         }
       });
     }

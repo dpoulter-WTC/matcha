@@ -13,6 +13,7 @@ import store from 'store';
 import Profile from './pages/profile';
 import Chat from './pages/chat';
 import Register from './pages/register';
+import Registered from './pages/registered';
 import Verify from './pages/verify';
 import Login from './pages/login';
 import Forgot from './pages/forgot'
@@ -45,6 +46,9 @@ export default function App() {
           </Route>
           <Route path="/register">
             <Register />
+          </Route>
+          <Route path="/registered">
+            <Registered />
           </Route>
           <Route path="/login" component={(Login)} />
           <Route path="/forgot">
