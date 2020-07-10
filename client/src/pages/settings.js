@@ -23,22 +23,24 @@ class Settings extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            firstName: '',
+            lastName: '',
+            username: '',
             gender: '', //0 for male, 1 for female
-            sexualPreference: 'a', //0 for straight, 1 for gay, 2 for bi
-            tags: [],
+            sexualPreference: '', //0 for straight, 1 for gay, 2 for bi
+            // tags: [],
             bio: '',
             errors: {
                 firstName: '',
                 lastName: '',
-                username: '',
                 email: '',
-                password: '',
+                bio: '',
             },
             errorstate: '',
             selected: 'general',
             pictures: [],
-            longitude: '',
-            latitude: ''
+            // longitude: '',
+            // latitude: ''
         };
         this.handleSubmit = this.handleSubmit.bind(this);
         this.getLocation = this.getLocation.bind(this);
@@ -46,17 +48,34 @@ class Settings extends Component {
 
     }
 
-
     async UNSAFE_componentWillMount() {
         if (!isLoggedIn()) {
             window.location.href = "/login"
         }
+        const response = await fetch('http://' + window.location.hostname + ':9000/users/fetchUser', {
+            headers: {
+                'Content-type': 'application/json',
+            },
+            method: 'POST',
+            body: JSON.stringify({ username: storage.unhash(store.get('username')) })
+        })
+        const data = await response.json();
+        console.log(data);
+        this.setState({
+            firstName: data.first_name,
+            lastName: data.last_name,
+            username: data.username,
+            email: data.email,
+            gender: data.gender, //0 for male, 1 for female
+            sexualPreference: data.sexualPreference, //0 for straight, 1 for gay, 2 for bi
+            bio: data.bio,
+        })
     }
 
     async handleSubmit(e) {
         e.preventDefault();
         if (validateForm(this.state.errors)) {
-            const response = await fetch('http://' + window.location.hostname + ':9000/users/settings', {
+            const response = await fetch('http://' + window.location.hostname + ':9000/users/setUser', {
                 headers: {
                     'Content-type': 'application/json',
                 },
@@ -130,22 +149,16 @@ class Settings extends Component {
                         ? 'Last Name cannot be blank!'
                         : '';
                 break;
-            case 'username':
-                errors.username =
-                    value.length < 6
-                        ? 'Username must be 6 characters long!'
-                        : '';
-                break;
             case 'email':
                 errors.email =
                     validEmailRegex.test(value)
                         ? ''
                         : 'Email is not valid!';
                 break;
-            case 'password':
-                errors.password =
-                    value.length < 6
-                        ? 'Password must be 6 characters long!'
+            case 'bio':
+                errors.bio =
+                    value.length > 250
+                        ? 'Bio must be less than 250 characters long!'
                         : '';
                 break;
             default:
@@ -169,33 +182,33 @@ class Settings extends Component {
                         </select>
                     </div>
                     <div className={styles.sexual}>
-                        <label htmlFor="sexual">Sexual Preferance</label>
-                        <select value={this.state.sexualPreference} name='sexual' onChange={this.handleChange} required>
+                        <label htmlFor="sexualPreference">Sexual Preferance</label>
+                        <select value={this.state.sexualPreference} name='sexualPreference' onChange={this.handleChange} required>
                             <option value="2">Bisexual</option>
                             <option value="0">Heterosexual</option>
                             <option value="1">Homosexual</option>
                         </select>
                     </div>
                     <div className={styles.bio}>
-                        <label for="bio">Biography:</label>
-                        <textarea id="bio" name="bio" rows="4" cols="50">
+                        <label htmlFor="bio">Biography:</label>
+                        <textarea value={this.state.bio} onChange={this.handleChange} name="bio" rows="4" cols="50">
                         </textarea>
                     </div>
                     <div className={styles.firstName}>
                         <label htmlFor="firstName">First Name</label>
-                        <input type='text' name='firstName' onChange={this.handleChange} required />
+                        <input value={this.state.firstName} type='text' name='firstName' onChange={this.handleChange} required />
                         {errors.firstName.length > 0 &&
                             <span className={styles.error}>{errors.firstName}</span>}
                     </div>
                     <div className={styles.lastName}>
                         <label htmlFor="lastName">Last Name</label>
-                        <input type='text' name='lastName' onChange={this.handleChange} required />
+                        <input value={this.state.lastName} type='text' name='lastName' onChange={this.handleChange} required />
                         {errors.lastName.length > 0 &&
                             <span className={styles.error}>{errors.lastName}</span>}
                     </div>
                     <div className={styles.email}>
                         <label htmlFor="email">Email</label>
-                        <input type='email' name='email' onChange={this.handleChange} required />
+                        <input value={this.state.email} type='email' name='email' onChange={this.handleChange} required />
                         {errors.email.length > 0 &&
                             <span className={styles.error}>{errors.email}</span>}
                     </div>
@@ -206,12 +219,12 @@ class Settings extends Component {
                         <button>Save</button>
                     </div>
                 </form>
-                <h2>Location</h2>
+                {/* <h2>Location</h2>
                 <form onSubmit={this.getLocation} >
                     <div className={styles.submit}>
                         <button>Refresh Location</button>
                     </div>
-                </form>
+                </form> */}
             </div>
         );
 

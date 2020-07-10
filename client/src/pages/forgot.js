@@ -4,14 +4,14 @@ import styles from "../styles/forgot.module.css"
 const bcrypt = require('../helpers/custom_bcrypt.js')
 
 function makeTempPass(length) {
-    var result           = '';
-    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var result = '';
+    var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     var charactersLength = characters.length;
-    for ( var i = 0; i < length; i++ ) {
-       result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    for (var i = 0; i < length; i++) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
     }
     return result;
- }
+}
 
 class Forgot extends Component {
     constructor(props) {
@@ -27,9 +27,10 @@ class Forgot extends Component {
     handleSubmit(e) {
         e.preventDefault();
 
-        
-        this.state.tempPass = makeTempPass(7);
-        this.state.tempPassHash = bcrypt.hash(this.state.tempPass);
+        this.setState({
+            tempPass: makeTempPass(7),
+            tempPassHash: bcrypt.hash(this.state.tempPass)
+        })
 
         var x = document.getElementById('hidden');
         x.style.display = 'block';
@@ -37,7 +38,7 @@ class Forgot extends Component {
         fetch('http://' + window.location.hostname + ':9000/users/forgot', {
             headers: {
                 'Content-type': 'application/json',
-              },
+            },
             method: 'POST',
             body: JSON.stringify(this.state),
         });
@@ -62,8 +63,8 @@ class Forgot extends Component {
                         <div className={styles.submit}>
                             <button>Reset My Password</button>
                         </div>
-                        <div className={styles.hiddenText} id='hidden' style={{display: 'none'}}>
-                        Password reset submitted, you should receive an email soon with a reset link.
+                        <div className={styles.hiddenText} id='hidden' style={{ display: 'none' }}>
+                            Password reset submitted, you should receive an email soon with a reset link.
                         </div>
                     </form>
                 </div>

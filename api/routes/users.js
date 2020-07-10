@@ -38,8 +38,11 @@ router.post("/login", function (req, res, next) {
 
 router.post('/register', function (req, res) {
   const validation = tools.makeid(10);
-  console.log(req.body)
-  dbConnect.query("INSERT INTO `user_login` (`id`, `email`, `password`, `first_name`, `last_name`, `age`,`username`, `verfication_code`) VALUES ('', '" + req.body.email + "', '" + req.body.password + "', '" + req.body.firstName + "', '" + req.body.lastName + "', '" + parseInt(req.body.age, 10) + "', '" + req.body.username + "', '" + validation + "');", function (err, rows, fields) {
+  dbConnect.query("\
+  INSERT INTO `user_login` \
+  (`id`, `email`, `password`, `first_name`, `last_name`, `age`,`username`, `verfication_code`, `sexualPreference`, `fame`, `bio`) \
+  VALUES \
+  ('', '" + req.body.email + "', '" + req.body.password + "', '" + req.body.firstName + "', '" + req.body.lastName + "', '" + parseInt(req.body.age, 10) + "', '" + req.body.username + "', '" + validation + "', '2', '0', '');", function (err, rows, fields) {
     if (err) {
       if (err.code == 'ER_DUP_ENTRY' || err.errno == 1062) {
         res.status(500).send({ res: 'Username or Email is already in use' });
@@ -75,6 +78,41 @@ router.post('/verify', function (req, res) {
   dbConnect.query("UPDATE `user_login` SET `verified` = '1' WHERE `user_login`.`verfication_code` = '" + req.body.id + "';", function (err, rows, fields) {
     if (err) {
 
+      if (err.code == 'ER_DUP_ENTRY' || err.errno == 1062) {
+        console.log('Here you can handle duplication')
+      }
+      else {
+        console.log('Other error in the query')
+      }
+
+    } else {
+      console.log('No error in the query')
+    }
+  })
+  res.end("yes");
+});
+
+router.post("/fetchUser", function (req, res, next) {
+  // res.send("API is working properly");
+  console.log(req.body.username)
+  dbConnect.query("SELECT * from user_login where `username`= '" + req.body.username + "'", function (err, rows, fields) {
+    if (err) {
+      res.status(100).send('Error connecting to database.');
+      return
+    } else {
+      if (rows.length > 0) {
+        console.log(rows[0])
+        res.status(200).send(rows[0]);
+      } else {
+        res.status(500).send('Username or Password incorrect');
+      }
+    }
+  })
+});
+
+router.post('/setUser', function (req, res) {
+  dbConnect.query("UPDATE `user_login` SET `last_name` = '" + req.body.lastName + "', `first_name` = '" + req.body.firstName + "', `gender` = '" + req.body.gender + "', `sexualPreference` = '" + req.body.sexualPreference + "', `bio` = '" + req.body.bio + "'  WHERE `user_login`.`username` = '" + req.body.username + "';", function (err, rows, fields) {
+    if (err) {
       if (err.code == 'ER_DUP_ENTRY' || err.errno == 1062) {
         console.log('Here you can handle duplication')
       }
