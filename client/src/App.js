@@ -15,6 +15,7 @@ import Verify from './pages/verify';
 import Login from './pages/login';
 import Forgot from './pages/forgot'
 import Settings from './pages/settings'
+import Home from './pages/home'
 
 import nextPath from './helpers/nextPath';
 import isLoggedIn from './helpers/is_logged_in';
@@ -51,6 +52,9 @@ export default function App() {
           </Route>
           <Route path="/setting">
             <Settings />
+          </Route>
+          <Route path="/">
+            <Home />
           </Route>
 
         </Switch>
