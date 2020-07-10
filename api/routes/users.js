@@ -38,7 +38,8 @@ router.post("/login", function (req, res, next) {
 
 router.post('/register', function (req, res) {
   const validation = tools.makeid(10);
-  dbConnect.query("INSERT INTO `user_login` (`id`, `email`, `password`, `first_name`, `last_name`, `username`, `verfication_code`) VALUES ('', '" + req.body.email + "', '" + req.body.password + "', '" + req.body.firstName + "', '" + req.body.lastName + "', '" + req.body.username + "', '" + validation + "');", function (err, rows, fields) {
+  console.log(req.body)
+  dbConnect.query("INSERT INTO `user_login` (`id`, `email`, `password`, `first_name`, `last_name`, `age`,`username`, `verfication_code`) VALUES ('', '" + req.body.email + "', '" + req.body.password + "', '" + req.body.firstName + "', '" + req.body.lastName + "', '" + parseInt(req.body.age, 10) + "', '" + req.body.username + "', '" + validation + "');", function (err, rows, fields) {
     if (err) {
       if (err.code == 'ER_DUP_ENTRY' || err.errno == 1062) {
         res.status(500).send({ res: 'Username or Email is already in use' });
@@ -50,7 +51,7 @@ router.post('/register', function (req, res) {
       }
     } else {
       const link = req.protocol + '://' + req.get('host').slice(0, -5) + ':3000/verify?id=' + validation;
-      const messagebody = 'Hello ' + req.body.firstName + 'Please verify your account using the following link:' + link + ' Regards,The Matcha Team';
+      const messagebody = 'Hello ' + req.body.firstName + 'Please verify your account using the following link:' + link + ' Regards, The Matcha Team';
       var mailOptions = {
         from: 'matchaproject1@gmail.com',
         to: req.body.email,
