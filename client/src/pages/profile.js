@@ -18,6 +18,7 @@ class Profile extends Component {
       pp: '',
       images: [],
       fame: 0,
+      bio: ''
     };
     this.likeButton = this.likeButton.bind(this);
   }
@@ -40,7 +41,8 @@ class Profile extends Component {
       const data2 = await response;
       console.log(data2)
       this.setState({
-        username: data.username
+        username: data.username,
+        bio: data.bio
       })
 
     }
@@ -232,7 +234,11 @@ class Profile extends Component {
             <div className={styles.headercontent}>
               <div className={styles.left}>
                 <img src={this.state.pp} style={{ paddingRight: "25px", maxHeight: "200px", maxWidth: "200px" }} />
+                <div>
                 <span className={styles.name}>{this.state.username}</span>
+                <br />
+                <span>{this.state.bio}</span>
+                </div>
               </div>
               <div className={styles.right}>
                 <div className={styles.rightButton}>

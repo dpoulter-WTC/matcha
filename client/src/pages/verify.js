@@ -26,7 +26,7 @@ class Verify extends Component {
         return (
             <div className={styles.wrapper}>
                 <div className={styles.formWrapper}>
-                    <h2>Test</h2>
+                    <h2>Your account is now verified. Login in the top corner</h2>
                 </div>
             </div>
         )
