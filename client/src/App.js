@@ -6,7 +6,8 @@ import {
   Link
 } from "react-router-dom";
 
-import Navbar from './componants/navbar'
+import Navbar from './components/navbar'
+import Footer from './components/footer'
 import store from 'store';
 
 import Profile from './pages/profile';
@@ -58,6 +59,7 @@ export default function App() {
           </Route>
 
         </Switch>
+        <Footer />
       </div>
     </Router>
   );

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styles from "../styles/home.module.css"
 
-class Verify extends Component {
+class Home extends Component {
 	constructor(props) {
 		super(props);
 
@@ -29,4 +29,4 @@ class Verify extends Component {
 	}
 }
 
-export default Verify;
+export default Home;
