@@ -6,6 +6,15 @@ const app = express();
 const multer = require("multer");
 const fileUpload = require('express-fileupload');
 const morgan = require('morgan');
+var nodemailer = require('nodemailer');
+
+var transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: 'matchaproject1@gmail.com',
+    pass: 'M@tchapass123'
+  }
+});
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
@@ -36,12 +45,12 @@ router.post("/profileinfo", function (req, res, next) {
 });
 
 var storage = multer.diskStorage({
-  destination: function(req, file, cb) {
-      cb(null, 'public/images/');
-   },
+  destination: function (req, file, cb) {
+    cb(null, 'public/images/');
+  },
   filename: function (req, file, cb) {
     console.log(req.body)
-      cb(null , file.originalname);
+    cb(null, file.originalname);
   }
 });
 
@@ -49,7 +58,7 @@ var upload = multer({ storage: storage })
 
 
 
-router.post("/upload", upload.single('picture'), function  (req, res) {
+router.post("/upload", upload.single('picture'), function (req, res) {
   try {
     if (!req.file) {
       res.status(300).send({
@@ -64,7 +73,7 @@ router.post("/upload", upload.single('picture'), function  (req, res) {
           return
         } else {
           if (rows.length > 0) {
-            dbConnect.query("UPDATE `images` SET `link` = '"+req.file.filename+"' WHERE `id` = '" + rows[0].ID + "';", function (err, rows2, fields) {
+            dbConnect.query("UPDATE `images` SET `link` = '" + req.file.filename + "' WHERE `id` = '" + rows[0].ID + "';", function (err, rows2, fields) {
               if (err) {
                 console.log(err)
                 res.status(100).send('Error connecting to database.');
@@ -74,7 +83,7 @@ router.post("/upload", upload.single('picture'), function  (req, res) {
               }
             })
           } else {
-            dbConnect.query("INSERT INTO `images` (`id`, `username`, `img-pos`, `link`) VALUES ('', '" + req.body.username + "', '" + req.body.img_pos + "', '"+req.file.filename+"');", function (err, rows, fields) {
+            dbConnect.query("INSERT INTO `images` (`id`, `username`, `img-pos`, `link`) VALUES ('', '" + req.body.username + "', '" + req.body.img_pos + "', '" + req.file.filename + "');", function (err, rows, fields) {
               if (err) {
                 console.log(err)
                 res.status(100).send('Error connecting to database.');
@@ -229,7 +238,7 @@ router.post("/grabfame", function (req, res, next) {
       return
     } else {
       if (rows.length > 0) {
-        res.status(200).send({length: rows.length})
+        res.status(200).send({ length: rows.length })
       }
       else {
         res.status(200).send({})
@@ -237,6 +246,24 @@ router.post("/grabfame", function (req, res, next) {
     }
   })
 });
+
+
+router.post("/report", function (req, res, next) {
+  
+  var mailOptions = {
+    from: 'matchaproject1@gmail.com',
+    to: 'matchaproject1@gmail.com',
+    subject: 'Report',
+    text: 'Reported: ' + req.body.profile + ' by: ' + req.body.username
+  };
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      console.log(error);
+    } else {
+      console.log('Email sent: ' + info.response);
+    }
+  });
+})
 
 
 

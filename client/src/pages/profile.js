@@ -166,6 +166,18 @@ class Profile extends Component {
     nextPath('/profile/' + username)
   }
 
+  async report(username) {
+    await fetch('http://' + window.location.hostname + ':9000/profile/report', {
+      headers: {
+        'Content-type': 'application/json',
+        'Accept': 'application/json'
+      },
+      method: 'POST',
+      body: JSON.stringify({ profile: username, username: storage.unhash(store.get('username')) })
+    })
+    nextPath('/')
+  }
+
   async likeUsername(username) {
     await fetch('http://' + window.location.hostname + ':9000/profile/like', {
       headers: {
@@ -243,6 +255,9 @@ class Profile extends Component {
               <div className={styles.right}>
                 <div className={styles.rightButton}>
                   {this.likeButton()}
+                </div>
+                <div>
+                <button onClick={() => this.report(this.state.username)}>Report Profile</button>
                 </div>
                 <h2>Fame: {this.state.fame}</h2>
               </div>
