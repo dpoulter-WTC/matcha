@@ -23,7 +23,7 @@ class Browse extends Component {
 				maxFame: 0,
 			},
 			peopleJSON: [],
-			sortBy: 'fame'
+			sortBy: 'age'
 		};
 		this.handleSubmit = this.handleSubmit.bind(this);
 	}
@@ -106,28 +106,36 @@ class Browse extends Component {
 		this.setState({ searchFor, [name]: value });
 	}
 
-	// POST request to fetch users that match:
-	// gender, 
-	// fame max user's + whatever,
-	// at least 1 common tag
-	//
-	// order by age, location, fame and common tag,
-	// filter above GET request based on filter. Age, location, fame, common tag
 	render() {
 		let peopleArr = [];
 		if (this.state.peopleJSON.length > 0) {
-			peopleArr = this.state.peopleJSON.map(function (person) {
-				const url = "/profile/" + person.username;
-				return (
-					<a href={url}>
-						<div className={styles.person}>
-							{person.username}<br />
+			if (this.state.sortBy == 'age') {
+				peopleArr = this.state.peopleJSON.sort((a, b) => a.age < b.age ? 1 : -1).map(function (person) {
+					const url = "/profile/" + person.username;
+					return (
+						<a href={url}>
+							<div className={styles.person}>
+								{person.username}<br />
+								Age: {person.age}<br />
+								Fame: {person.fame}<br /><br />
+							</div>
+						</a>
+					);
+				});
+			} else {
+				peopleArr = this.state.peopleJSON.sort((a, b) => a.fame < b.fame ? 1 : -1).map(function (person) {
+					const url = "/profile/" + person.username;
+					return (
+						<a href={url}>
+							<div className={styles.person}>
+								{person.username}<br />
 							Age: {person.age}<br />
 							Fame: {person.fame}<br /><br />
-						</div>
-					</a>
-				);
-			});
+							</div>
+						</a>
+					);
+				});
+			}
 		}
 		return (
 			<div className={styles.wrapper}>
@@ -155,9 +163,9 @@ class Browse extends Component {
 					</form>
 				</div>
 				<div >
-              <h1>Users</h1>
-              {peopleArr}
-            </div>
+					<h1>Users</h1>
+					{peopleArr}
+				</div>
 			</div>
 		)
 	}
