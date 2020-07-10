@@ -1,0 +1,89 @@
+.background {
+    background-color: #2e5470;
+    width: 100%;
+}
+
+.content {
+    background-color: #0a151e;
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.header {
+    background-color: #181b22;
+    height: 250px;
+    align-items: center;
+}
+
+.name {
+    font-size: 24px;
+    line-height: 40px;
+    font-family: "Motiva Sans", Sans-serif;
+    font-weight: 200;
+}
+
+.headercontent {
+    padding: 25px;
+    display: flex;
+}
+
+.left {
+    flex: 5;
+    display: flex;
+}
+
+.right {
+    display: flex;
+    flex: 2;
+    flex-direction: column;
+    width: 260px;
+    max-width: 80%;
+    min-width: 75px;
+    min-height: 150px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-radius: 6px;
+    box-shadow: 0px 8px 36px #222;
+    background-color: #1c1c21;
+    align-items: center;
+}
+
+.mainBody{
+    height: 800px;
+    /* display: flex; */
+}
+
+.images {
+    padding: 25px;
+    flex: 8;
+}
+
+.sideBar {
+    display: flex;
+    flex: 3;
+    flex-direction: column;
+    width: 280px;
+    max-width: 80%;
+    min-width: 100px;
+    min-height: 400px;
+    padding: 20px 40px;
+    border-radius: 6px;
+    box-shadow: 0px 8px 36px #222;
+    background-color: #1c1c21;
+    align-items: center;
+}
+
+.view, .like {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+}
+
+.headerText {
+    font-size: 40px;
+    padding: 25px;
+    display: flex;
+    max-width: 80%;
+    align-items: center;
+}
