@@ -93,6 +93,38 @@ router.post("/upload", upload.single('picture'), function  (req, res) {
   }
 });
 
+router.post("/getpp", function (req, res, next) {
+  dbConnect.query("SELECT * from images where `username`= '" + req.body.username + "' AND `img-pos` = '" + req.body.img_pos + "'", function (err, rows, fields) {
+    if (err) {
+      res.status(100).send('Error connecting to database.');
+      return
+    } else {
+      if (rows.length > 0) {
+        console.log(rows[0])
+        res.status(200).send(rows[0]);
+      } else {
+        res.status(200).send({ error: "Can't get pp" });
+      }
+    }
+  })
+});
+
+router.post("/getpictures", function (req, res, next) {
+  dbConnect.query("SELECT * from images where `username`= '" + req.body.username + "' ORDER BY `img-pos` ASC", function (err, rows, fields) {
+    if (err) {
+      res.status(100).send('Error connecting to database.');
+      return
+    } else {
+      if (rows.length > 0) {
+        console.log(rows)
+        res.status(200).send(rows);
+      } else {
+        res.status(200).send({ error: "Can't get pp" });
+      }
+    }
+  })
+});
+
 router.post("/checklike", function (req, res, next) {
   dbConnect.query("SELECT * from likes where `username`= '" + req.body.username + "' AND `profile` = '" + req.body.profile + "'", function (err, rows, fields) {
     if (err) {
@@ -189,6 +221,22 @@ router.post("/grabliked", function (req, res, next) {
   })
 });
 
+
+router.post("/grabfame", function (req, res, next) {
+  dbConnect.query("SELECT * from likes where `profile` = '" + req.body.profile + "' ORDER BY `ID` DESC", function (err, rows, fields) {
+    if (err) {
+      res.status(100).send('Error connecting to database.');
+      return
+    } else {
+      if (rows.length > 0) {
+        res.status(200).send({length: rows.length})
+      }
+      else {
+        res.status(200).send({})
+      }
+    }
+  })
+});
 
 
 

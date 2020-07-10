@@ -219,16 +219,17 @@ class Settings extends Component {
 
     handleChanges(selectorFiles, file_id) {
         var formdata = new FormData();
-        console.log(selectorFiles)
-        formdata.append("picture", selectorFiles.files[0], "/C:/Users/Daniel/Pictures/Wallpaper/Done/Clear-rain.jpg");
-        formdata.append("username", storage.hash(this.state.username));
-        formdata.append("img_pos", file_id);
-        console.log(selectorFiles)
-        fetch('http://' + window.location.hostname + ':9000/profile/upload', {
-            redirect: 'follow',
-            method: 'POST',
-            body: formdata
-        })
+        if ((selectorFiles[0].type === "image/jpeg") || (selectorFiles[0].type === "image/png") || (selectorFiles[0].type === "image/gif")) {
+            formdata.append("picture", selectorFiles[0], selectorFiles[0].name);
+            formdata.append("username", storage.unhash(store.get('username')));
+            formdata.append("img_pos", file_id);
+            console.log(selectorFiles)
+            fetch('http://' + window.location.hostname + ':9000/profile/upload', {
+                redirect: 'follow',
+                method: 'POST',
+                body: formdata
+            })
+        }
     }
 
 
@@ -238,11 +239,11 @@ class Settings extends Component {
             <div>
                 <h2>Change Details</h2>
                 <div>
-                    <input type="file" onChange={(e) => this.handleChanges(e.target.files, 5)} />
-                    <input type="file" onChange={(e) => this.handleChanges(e.target.files, 0)} />
-                    <input type="file" onChange={(e) => this.handleChanges(e.target.files, 1)} />
-                    <input type="file" onChange={(e) => this.handleChanges(e.target.files, 2)} />
-                    <input type="file" onChange={(e) => this.handleChanges(e.target.files, 3)} />
+                    <input type="file" accept="image/gif, image/jpeg, image/png" onChange={(e) => this.handleChanges(e.target.files, 5)} />
+                    <input type="file" accept="image/gif, image/jpeg, image/png" onChange={(e) => this.handleChanges(e.target.files, 0)} />
+                    <input type="file" accept="image/gif, image/jpeg, image/png" onChange={(e) => this.handleChanges(e.target.files, 1)} />
+                    <input type="file" accept="image/gif, image/jpeg, image/png" onChange={(e) => this.handleChanges(e.target.files, 2)} />
+                    <input type="file" accept="image/gif, image/jpeg, image/png" onChange={(e) => this.handleChanges(e.target.files, 3)} />
                 </div>
             </div>
         )
@@ -255,8 +256,6 @@ class Settings extends Component {
                     <div className={styles.menu}>
                         <a onClick={event => this.setState({ selected: 'general' })} className={styles.link}>General</a>
                         <a onClick={event => this.setState({ selected: 'profile' })} className={styles.link}>Profile</a>
-                        <a className={styles.link}>General</a>
-                        <a className={styles.link}>General</a>
 
                     </div>
                     <div className={styles.content}>

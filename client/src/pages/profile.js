@@ -4,25 +4,8 @@ import ImageGallery from 'react-image-gallery';
 import style from "react-image-gallery/styles/css/image-gallery.css";
 import isLoggedIn from '../helpers/is_logged_in';
 import store from 'store';
+import nextPath from '../helpers/nextPath';
 const storage = require('../helpers/storage.js');
-
-const images = [
-  {
-    original: 'https://picsum.photos/id/1018/1000/600/',
-    thumbnail: 'https://picsum.photos/id/1018/250/150/',
-    description: "Hello",
-  },
-  {
-    original: 'https://picsum.photos/id/1015/1000/600/',
-    thumbnail: 'https://picsum.photos/id/1015/250/150/',
-    description: "This",
-  },
-  {
-    original: 'https://picsum.photos/id/1019/1000/600/',
-    thumbnail: 'https://picsum.photos/id/1019/250/150/',
-    description: "Test",
-  },
-];
 
 class Profile extends Component {
   constructor(props) {
@@ -32,13 +15,16 @@ class Profile extends Component {
       liked: 0,
       viewsJSON: [],
       likesJSON: [],
+      pp: '',
+      images: [],
+      fame: 0,
     };
     this.likeButton = this.likeButton.bind(this);
   }
 
   async UNSAFE_componentWillMount() {
     if (!isLoggedIn()) {
-      window.location.href = "/login"
+      nextPath('/login')
     }
     console.log(JSON.stringify({ username: this.props.match.params.username }))
     if (this.props.match.params.username) {
@@ -107,6 +93,63 @@ class Profile extends Component {
     this.setState({
       likesJSON: likes
     })
+
+    const fameres = await fetch('http://' + window.location.hostname + ':9000/profile/grabfame', {
+      headers: {
+        'Content-type': 'application/json',
+        'Accept': 'application/json'
+      },
+      method: 'POST',
+      body: JSON.stringify({ profile: this.state.username })
+    })
+    const fame = await fameres.json();
+    this.setState({
+      fame: fame.length > 0 ? fame.length : 0
+    })
+
+
+    const profilePictures = await fetch('http://' + window.location.hostname + ':9000/profile/getpp', {
+      headers: {
+        'Content-type': 'application/json',
+        'Accept': 'application/json'
+      },
+      method: 'POST',
+      body: JSON.stringify({ username: this.state.username, img_pos: 5 })
+    })
+    const getpp = await profilePictures.json();
+    var links = "";
+    if (getpp.link) {
+      links = 'http://' + window.location.hostname + ':9000/images/' + getpp.link
+    }
+    else {
+      links = "https://picsum.photos/id/1018/1000/600/"
+    }
+    this.setState({
+      pp: links
+    })
+
+    const pictures = await fetch('http://' + window.location.hostname + ':9000/profile/getpictures', {
+      headers: {
+        'Content-type': 'application/json',
+        'Accept': 'application/json'
+      },
+      method: 'POST',
+      body: JSON.stringify({ username: this.state.username })
+    })
+    const picture = await pictures.json();
+    let picarr = []
+    if (picture.length > 0) {
+      picarr = picture.map(function (val) {
+        return ({ original: 'http://' + window.location.hostname + ':9000/images/' + val.link })
+      })
+    } else {
+      picarr = [{ original: "https://picsum.photos/id/1018/1000/600/" }]
+    }
+    this.setState({
+
+      images: picarr
+    })
+
   }
 
   async unLikeUsername(username) {
@@ -118,6 +161,7 @@ class Profile extends Component {
       method: 'POST',
       body: JSON.stringify({ profile: username, username: storage.unhash(store.get('username')) })
     })
+    nextPath('/profile/' + username)
   }
 
   async likeUsername(username) {
@@ -129,6 +173,7 @@ class Profile extends Component {
       method: 'POST',
       body: JSON.stringify({ profile: username, username: storage.unhash(store.get('username')) })
     })
+    nextPath('/profile/' + username)
   }
 
 
@@ -136,12 +181,15 @@ class Profile extends Component {
   likeButton() {
     if (storage.unhash(store.get('username')) === this.state.username) {
       return (
-        <button>Edit Profile</button>
+        <button onClick={() => nextPath('/setting')}>Edit Profile</button>
       )
     }
     if (this.state.liked) {
       return (
-        <button onClick={() => this.unLikeUsername(this.state.username)}>Unlike</button>
+        <div>
+          <button onClick={() => this.unLikeUsername(this.state.username)}>Unlike</button>
+          <button onClick={() => nextPath('/chat/' + this.props.match.params.username)}>Chat</button>
+        </div>
       )
     }
     return (
@@ -183,21 +231,21 @@ class Profile extends Component {
           <div className={styles.header}>
             <div className={styles.headercontent}>
               <div className={styles.left}>
-                <img src="https://placebear.com/200/200" style={{ paddingRight: "25px" }} />
+                <img src={this.state.pp} style={{ paddingRight: "25px", maxHeight: "200px", maxWidth: "200px" }} />
                 <span className={styles.name}>{this.state.username}</span>
               </div>
               <div className={styles.right}>
                 <div className={styles.rightButton}>
-                {this.likeButton()}
+                  {this.likeButton()}
                 </div>
-                <h2>Fame:</h2>
+                <h2>Fame: {this.state.fame}</h2>
               </div>
             </div>
           </div>
 
           <div className={styles.mainBody}>
             <div className={styles.images}>
-              <ImageGallery className={style} items={images} showPlayButton={false} />
+              <ImageGallery className={style} items={this.state.images} showPlayButton={false} />
             </div>
             <div className={styles.sideBar}>
               <h1>Views</h1>

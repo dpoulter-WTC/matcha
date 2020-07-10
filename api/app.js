@@ -9,6 +9,7 @@ var mysql = require('mysql')
 var indexRouter = require('./routes/index.js');
 var usersRouter = require('./routes/users');
 var profileRouter = require('./routes/profile');
+var chatRouter = require('./routes/chat');
 
 var app = express();
 
@@ -26,6 +27,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/profile', profileRouter);
+app.use('/chat', chatRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

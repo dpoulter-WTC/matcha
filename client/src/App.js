@@ -10,6 +10,7 @@ import Navbar from './componants/navbar'
 import store from 'store';
 
 import Profile from './pages/profile';
+import Chat from './pages/chat';
 import Register from './pages/register';
 import Verify from './pages/verify';
 import Login from './pages/login';
@@ -32,6 +33,7 @@ export default function App() {
             renders the first one that matches the current URL. */}
         <Switch>
           <Route path="/profile/:username" component={(Profile)} />
+          <Route path="/chat/:username" component={(Chat)} />
           <Route path="/profile">
             <MyProfile />
           </Route>
