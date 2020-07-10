@@ -18,6 +18,7 @@ import Login from './pages/login';
 import Forgot from './pages/forgot'
 import Settings from './pages/settings'
 import Home from './pages/home'
+import Browse from './pages/browse'
 
 import nextPath from './helpers/nextPath';
 import isLoggedIn from './helpers/is_logged_in';
@@ -56,9 +57,13 @@ export default function App() {
           <Route path="/setting">
             <Settings />
           </Route>
+          <Route path="/browse">
+            <Browse />
+          </Route>
           <Route path="/">
             <Home />
           </Route>
+          
 
         </Switch>
         <Footer />

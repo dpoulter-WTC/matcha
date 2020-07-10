@@ -110,6 +110,21 @@ router.post("/fetchUser", function (req, res, next) {
   })
 });
 
+router.post("/browseUsers", function (req, res, next) {
+  dbConnect.query("SELECT * from user_login WHERE `fame` < '" + req.body.fameDiff + "' AND `age` < '" + req.body.ageDiff + "' ORDER BY '" + req.body.sortBy + "'", function (err, rows, fields) {
+    if (err) {
+      res.status(100).send('Error connecting to database.');
+      return
+    } else {
+      if (rows.length > 0) {
+        res.status(200).send(rows);
+      } else {
+        res.status(200).send({})
+      }
+    }
+  })
+});
+
 router.post('/setUser', function (req, res) {
   dbConnect.query("UPDATE `user_login` SET `last_name` = '" + req.body.lastName + "', `first_name` = '" + req.body.firstName + "', `gender` = '" + req.body.gender + "', `sexualPreference` = '" + req.body.sexualPreference + "', `bio` = '" + req.body.bio + "'  WHERE `user_login`.`username` = '" + req.body.username + "';", function (err, rows, fields) {
     if (err) {

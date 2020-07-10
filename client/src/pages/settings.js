@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import styles from "../styles/settings.module.css"
 import isLoggedIn from '../helpers/is_logged_in';
-import ImageUploader from "react-images-upload";
 import '../styles/fileUploader.css'
 import store from 'store';
 const storage = require('../helpers/storage.js');
@@ -60,7 +59,6 @@ class Settings extends Component {
             body: JSON.stringify({ username: storage.unhash(store.get('username')) })
         })
         const data = await response.json();
-        console.log(data);
         this.setState({
             firstName: data.first_name,
             lastName: data.last_name,

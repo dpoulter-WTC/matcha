@@ -8,6 +8,7 @@ function loggedIN() {
     return (
         <header className={styles.navbar}>
             <div className={styles.navbarTitle} onClick={event => nextPath('/')}>ProdHub</div>
+            <div className={styles.navbarItem} onClick={event => nextPath('/browse')}>Browse</div>
             <div className={styles.navbarItem} onClick={event => nextPath('/profile')}>Profile</div>
             <div className={styles.navbarItem} onClick={event => nextPath('/setting')}>Settings</div>
             <div className={styles.navbarItem} onClick={event => nextPath('/logout')}>Logout</div>
